@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Programmeren_Examen_Final
+namespace Programmeren_Examen_Tool_1
 {
     class StraatLengteEerst : Comparer<Straat>
     {

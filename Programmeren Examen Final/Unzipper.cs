@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.IO.Compression;
 
-namespace Programmeren_Examen_Final
+namespace Programmeren_Examen_Tool_1
 {
     class Unzipper
     {

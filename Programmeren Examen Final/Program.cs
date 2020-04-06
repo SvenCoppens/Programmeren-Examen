@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Programmeren_Examen_Final
+namespace Programmeren_Examen_Tool_1
 {
     class Program
     {
@@ -14,9 +14,16 @@ namespace Programmeren_Examen_Final
             Dictionary<string, Graaf> straatIdGraafKoppeling = fe.MaakSegmenten(path);
             StraatNaamExtraction sne = new StraatNaamExtraction();
             Console.WriteLine("deel 2");
-            Dictionary<string, Straat> straten = sne.Extract(path, straatIdGraafKoppeling);
-            ReportWriter rw = new ReportWriter(straten);
-            rw.WriteReport();
+            Dictionary<string, Provincie> provincies = sne.Extract(path, straatIdGraafKoppeling);
+            List<Provincie> provinciesLijst = new List<Provincie>();
+            foreach(var x in provincies)
+            {
+                provinciesLijst.Add(x.Value);
+            }
+            //ReportWriter rw = new ReportWriter(straten);
+            //rw.CreateReport();
+            Serializer serializer = new Serializer(provinciesLijst);
+            serializer.Serialize();
             Console.WriteLine("donezo");
 
 

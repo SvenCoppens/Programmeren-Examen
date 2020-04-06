@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Programmeren_Examen_Final
+namespace Programmeren_Examen_Tool_1
 {
     class FileExtraction
     {

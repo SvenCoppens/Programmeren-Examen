@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Programmeren_Examen_Final
+namespace Programmeren_Examen_Tool_1
 {
     class StraatNaamExtraction
     {
-        public Dictionary<string,Straat> Extract(string path, Dictionary<string, Graaf> straatIdGraafKoppeling)
+        public Dictionary<string,Provincie> Extract(string path, Dictionary<string, Graaf> straatIdGraafKoppeling)
         {
             List<string> filter = new List<string>();
             Dictionary<string, List<string>> ProvincieIDGemeenteIDLink = new Dictionary<string, List<string>>();
@@ -165,7 +165,7 @@ namespace Programmeren_Examen_Final
                 //        straten.Add(IDGraaf.Key, tempStraat);
                 //    }
                 //}
-                return straten;
+                return provincies;
 
         }
     }
