@@ -22,7 +22,10 @@ namespace Programmeren_Examen_Tool_1
             }
             //ReportWriter rw = new ReportWriter(straten);
             //rw.CreateReport();
-            Serializer serializer = new Serializer(provinciesLijst);
+            //Serializer serializer = new Serializer(provinciesLijst);
+            //serializer.Serialize();
+            Belgie belgie = new Belgie(provinciesLijst);
+            Serializer serializer = new Serializer(belgie);
             serializer.Serialize();
             Console.WriteLine("donezo");
 
