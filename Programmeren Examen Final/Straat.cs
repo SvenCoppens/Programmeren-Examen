@@ -27,10 +27,12 @@ namespace Programmeren_Examen_Final
             Naam = naam;
             Gemeente = gemeente;
             gemeente.Straten.Add(this);
+            BerekenLengte();
         }
         public Graaf Graaf { get; set; }
         public int StraatID { get; set; }
         public Gemeente Gemeente { get; set; }
+        public double Lengte { get; set; }
         public override string ToString()
         {
             return $"Straat: {Naam}, in: {Gemeente.Naam},Graaf: {Graaf.GraafID}";
@@ -43,6 +45,26 @@ namespace Programmeren_Examen_Final
                 return (StraatID == temp.StraatID && Naam == temp.Naam && Graaf == temp.Graaf && Gemeente==temp.Gemeente);
             }
             else return false;
+        }
+        public void BerekenLengte()
+        {
+            double lengte = 0;
+            List<Segment> uniekeSegmenten = new List<Segment>();
+            foreach (KeyValuePair<Knoop, List<Segment>> segmentCombo in Graaf.Map)
+            {
+                foreach (Segment seg in segmentCombo.Value)
+                {
+                    if (!uniekeSegmenten.Contains(seg))
+                    {
+                        uniekeSegmenten.Add(seg);
+                    }
+                }
+            }
+            foreach (Segment seg in uniekeSegmenten)
+            {
+                lengte += seg.Lengte;
+            }
+            Lengte = lengte;
         }
     }
 }

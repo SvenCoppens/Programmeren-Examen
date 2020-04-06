@@ -15,6 +15,8 @@ namespace Programmeren_Examen_Final
             StraatNaamExtraction sne = new StraatNaamExtraction();
             Console.WriteLine("deel 2");
             Dictionary<string, Straat> straten = sne.Extract(path, straatIdGraafKoppeling);
+            ReportWriter rw = new ReportWriter(straten);
+            rw.WriteReport();
             Console.WriteLine("donezo");
 
 

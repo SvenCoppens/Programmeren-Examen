@@ -16,6 +16,10 @@ namespace Programmeren_Examen_Final
         public string Id { get; set; }
         public Provincie Provincie { get; set; }
         public List<Straat> Straten { get; set; }
+        public override string ToString()
+        {
+            return Naam;
+        }
 
         public override bool Equals(object obj)
         {
@@ -29,6 +33,15 @@ namespace Programmeren_Examen_Final
         public override int GetHashCode()
         {
             return HashCode.Combine(Naam, Id, Provincie, Straten);
+        }
+        public double BerekenTotaleLengte()
+        {
+            double totaal = 0;
+            foreach(Straat straat in Straten)
+            {
+                totaal += straat.Lengte;
+            }
+            return totaal;
         }
     }
 }

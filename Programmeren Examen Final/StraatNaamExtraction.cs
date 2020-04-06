@@ -54,13 +54,14 @@ namespace Programmeren_Examen_Final
                             }
                             else
                             {
-                                ProvincieIDGemeenteIDLink.Add(provincieId, new List<string>() { gemeenteId });
+                                ProvincieIDGemeenteIDLink.Add(provincieId, new List<string>());
+                                ProvincieIDGemeenteIDLink[provincieId].Add(gemeenteId);
                             }
                         }
                     }
                 }
             }
-            //Gemeente naam en IDaan elkaar koppelen.
+            //Gemeente naam en ID aan elkaar koppelen.
             using (StreamReader sr = new StreamReader(Path.Combine(path, "WRGemeentenaam.csv")))
             {
                 sr.ReadLine();
@@ -94,7 +95,7 @@ namespace Programmeren_Examen_Final
                 while ((line = sr.ReadLine()) != null)
                 {
                     string[] splitLine = line.Split(";");
-                    straatIdEnNaam.Add(splitLine[0], splitLine[1]);
+                    straatIdEnNaam.Add(splitLine[0], splitLine[1].Trim());
                 }
 
             }
@@ -113,6 +114,7 @@ namespace Programmeren_Examen_Final
                         else
                         {
                             gemeenteIdStraatID.Add(splitLine[1], new List<string>());
+                            gemeenteIdStraatID[splitLine[1]].Add(splitLine[0]);
                         }
                     }
                 }
@@ -134,25 +136,36 @@ namespace Programmeren_Examen_Final
                     }
                 }
             }
-            int antwerpen = 0;
-            int limburg = 0;
-            int vlaamsbrab = 0;
-            int west = 0;
-            int oost = 0;
-
-                foreach(KeyValuePair<string,Gemeente> entry in gemeenten)
+            //Lege Provincies weghalen uit de verzameling gemeenten
+            foreach(KeyValuePair<string,Gemeente> gemeente in gemeenten)
             {
-                if (entry.Value.Provincie.Naam == "Antwerpen")
-                    antwerpen += entry.Value.Straten.Count;
-                else if (entry.Value.Provincie.Naam == "Limburg")
-                    limburg += entry.Value.Straten.Count;
-                else if (entry.Value.Provincie.Naam == "West-Vlaanderen")
-                    west += entry.Value.Straten.Count;
-                else if (entry.Value.Provincie.Naam == "Oost-Vlaanderen")
-                    oost += entry.Value.Straten.Count;
-                else vlaamsbrab += entry.Value.Straten.Count;
+                if (gemeente.Value.Straten.Count == 0)
+                {
+                    gemeente.Value.Provincie.Gemeenten.Remove(gemeente.Value);
+                }
             }
-            return straten;
+
+                //poging te verbeteren
+                //Dictionary<string, string> straatIdGemeenteId = new Dictionary<string, string>();
+                //foreach(KeyValuePair<string,List<string>> IDs in gemeenteIdStraatID)
+                //{
+                //    foreach(string straatId in IDs.Value)
+                //    {
+                //        straatIdGemeenteId.Add(straatId, IDs.Key);
+                //    }
+                //}
+                //foreach(KeyValuePair<string, Graaf> IDGraaf in straatIdGraafKoppeling)
+                //{
+                //    if (straatIdGemeenteId.ContainsKey(IDGraaf.Key))
+                //    {
+                //        string naam = straatIdEnNaam[IDGraaf.Key];
+                //        Graaf tempGraaf = IDGraaf.Value;
+                //        Gemeente tempGemeente = gemeenten[straatIdGemeenteId[IDGraaf.Key]];
+                //        Straat tempStraat = new Straat(ID_Generator.StraatIDToekennen(), naam, tempGraaf, tempGemeente);
+                //        straten.Add(IDGraaf.Key, tempStraat);
+                //    }
+                //}
+                return straten;
 
         }
     }
