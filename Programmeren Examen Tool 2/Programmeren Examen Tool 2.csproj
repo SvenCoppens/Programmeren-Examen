@@ -6,4 +6,16 @@
     <RootNamespace>Programmeren_Examen_Tool_2</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Programmeren Examen Final\Programmeren Examen Tool 1.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DataBase Files\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+  </ItemGroup>
+
 </Project>

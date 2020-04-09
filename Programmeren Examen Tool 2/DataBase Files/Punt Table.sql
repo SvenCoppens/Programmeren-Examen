@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[punt]
+(
+	[Id] INT IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+	[X] FLOAT (50) NOT NULL,
+	[Y] FLOAT (50) NOT NULL
+)

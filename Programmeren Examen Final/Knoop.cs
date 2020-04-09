@@ -5,7 +5,7 @@ using System.Text;
 namespace Programmeren_Examen_Tool_1
 {
     [Serializable]
-    class Knoop
+    public class Knoop
     {
         public Knoop(int ID, Punt punt)
         {

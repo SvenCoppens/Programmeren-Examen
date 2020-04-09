@@ -4,12 +4,13 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Programmeren_Examen_Tool_1;
 
 namespace Programmeren_Examen_Tool_2
 {
     class Serialization_extraction
     {
-        Belgie Belgie;
+        Programmeren_Examen_Tool_1.Belgie Belgie;
         string BinPath;
         public Serialization_extraction()
         {

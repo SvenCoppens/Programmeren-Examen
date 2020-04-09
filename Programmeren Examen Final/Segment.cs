@@ -5,7 +5,7 @@ using System.Text;
 namespace Programmeren_Examen_Tool_1
 {
     [Serializable]
-    class Segment
+    public class Segment
     {
         public Segment(int iD, Knoop beginKnoop, Knoop eindKnoop, List<Punt> punten)
         {

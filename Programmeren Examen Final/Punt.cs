@@ -5,7 +5,7 @@ using System.Text;
 namespace Programmeren_Examen_Tool_1
 {
     [Serializable]
-    class Punt
+    public class Punt
     {
         public Punt(double x,double y)
         {

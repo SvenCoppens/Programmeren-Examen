@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[gemeente]
+(
+	[Id] INT NOT NULL PRIMARY KEY,
+	[Naam] VARCHAR(50) NOT NULL,
+)

@@ -5,7 +5,7 @@ using System.Text;
 namespace Programmeren_Examen_Tool_1
 {
     [Serializable]
-    class Gemeente
+    public class Gemeente
     {
         public Gemeente(string id,string naam)
         {

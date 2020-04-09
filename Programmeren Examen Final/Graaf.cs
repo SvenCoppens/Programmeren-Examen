@@ -5,7 +5,7 @@ using System.Text;
 namespace Programmeren_Examen_Tool_1
 {
     [Serializable]
-    class Graaf
+    public class Graaf
     {
         public Graaf(int ID, Dictionary<Knoop,List<Segment>> lijst)
         {

@@ -5,7 +5,7 @@ using System.Text;
 namespace Programmeren_Examen_Tool_1
 {
     [Serializable]
-    class Straat
+    public class Straat
     {
         public string Naam { get; set; }
         public List<Knoop> GetKnopen()

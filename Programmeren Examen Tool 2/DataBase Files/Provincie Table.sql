@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[provincie]
+(
+	[Id] INT NOT NULL PRIMARY KEY,
+	[Naam] VARCHAR(25) NOT NULL
+)

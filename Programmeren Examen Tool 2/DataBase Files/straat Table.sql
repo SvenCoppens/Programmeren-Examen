@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[straat]
+(
+	[Id] INT NOT NULL PRIMARY KEY,
+	[Naam] VARCHAR(50) NOT NULL,
+
+)

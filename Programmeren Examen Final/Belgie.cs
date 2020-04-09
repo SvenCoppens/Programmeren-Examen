@@ -5,9 +5,9 @@ using System.Text;
 namespace Programmeren_Examen_Tool_1
 {
     [Serializable]
-    class Belgie
+    public class Belgie
     {
-        List<Provincie> Provincies { get; set; }
+        public List<Provincie> Provincies { get; set; }
         public Belgie(List<Provincie> provincies)
         {
             Provincies = provincies;
