@@ -341,7 +341,7 @@ namespace Programmeren_Examen_Tool_2
         public bool CheckSegment(Segment seg)
         {
             SqlConnection connection = getConnection();
-            string query = "SELECT * FROM dbo.segment WHERE Id=@Id";
+            string query = "SELECT COUNT(*) AS count FROM dbo.segment WHERE Id=@Id";
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = query;
@@ -351,22 +351,24 @@ namespace Programmeren_Examen_Tool_2
                 paramId.Value = seg.SegmentID;
                 command.Parameters.Add(paramId);
                 connection.Open();
-                //hier maak ik gebruik van een exception om te kijken of een bepaald segment al bestaat: als het niet bestaat, throwt hij een error die wordt opgevangen en gewoon false returnt.
+                
                 try
                 {
                     IDataReader reader = command.ExecuteReader();
                     reader.Read();
-                    int segId = (int)reader["Id"];
+                    int segCount = (int)reader["count"];
 
+                    if (segCount == 0)
+                    {
+                        return false;
+                    }
+                    else
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    //deze code nog aanpassen zodat hij enkel false returnt
-                    //Console.WriteLine("normaal dat hij hier alles opvangt hoop ik?");
-                    //Console.WriteLine(ex);
-                    Console.WriteLine("false return");
-                    return false;
+                    Console.WriteLine(ex);
+                    throw new Exception("Incorrect SQL syntax in CheckSegment");
                 }
                 finally
                 {
@@ -377,7 +379,7 @@ namespace Programmeren_Examen_Tool_2
         public bool CheckKnoop(Knoop knoop)
         {
             SqlConnection connection = getConnection();
-            string query = "SELECT * FROM dbo.knoop WHERE Id=@Id";
+            string query = "SELECT COUNT(*) AS count FROM dbo.knoop WHERE Id=@Id";
             using (SqlCommand command = connection.CreateCommand())
             {
                 command.CommandText = query;
@@ -391,14 +393,18 @@ namespace Programmeren_Examen_Tool_2
                 {
                     IDataReader reader = command.ExecuteReader();
                     reader.Read();
-                    int segId = (int)reader["Id"];
+                    int knoopCount = (int)reader["count"];
 
-                    return true;
+                    if (knoopCount == 1)
+                    {
+                        return true;
+                    }
+                    else return false;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("false return knoop");
-                    return false;
+                    Console.WriteLine(ex);
+                    throw new Exception("Incorrect SQL syntax in CheckKnoop");
                 }
                 finally
                 {

@@ -8,17 +8,17 @@ namespace Programmeren_Examen_Tool_2
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Hello World!");
-            //Serialization_extraction SE = new Serialization_extraction();
-            //Belgie belg = SE.Serialize();
-            //Console.WriteLine("Hello World!2");
-            //DataProcessing dP = new DataProcessing(belg);
-            //dP.FillDataBase();
+            Console.WriteLine("Hello World!");
+            Serialization_extraction SE = new Serialization_extraction();
+            Belgie belg = SE.Serialize();
+            Console.WriteLine("Hello World!2");
+            DataProcessing dP = new DataProcessing(belg);
+            dP.FillDataBase();
 
-            Console.WriteLine("testen");
-            Belgie belg = TestData();
-            //Knoop knoop1 = new Knoop(30, new Punt(2.45, 3.45));
-            //dp.FillDataBase();
+            //Console.WriteLine("testen");
+            //Belgie belg = TestData();
+            ////Knoop knoop1 = new Knoop(30, new Punt(2.45, 3.45));
+            ////dp.FillDataBase();
         }
 
         static Belgie TestData()
