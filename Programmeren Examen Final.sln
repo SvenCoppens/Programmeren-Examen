@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programmeren Examen Tool 1", "Programmeren Examen Final\Programmeren Examen Tool 1.csproj", "{27A3A90E-1B49-4CF3-B40C-7E88FE4418C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programmeren Examen Tool 2", "Programmeren Examen Tool 2\Programmeren Examen Tool 2.csproj", "{58C0BCA5-E4C9-48BC-A0CC-73EBEE0A2787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programmeren Examen Tool 2", "Programmeren Examen Tool 2\Programmeren Examen Tool 2.csproj", "{58C0BCA5-E4C9-48BC-A0CC-73EBEE0A2787}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programmeren Examen Tool 3", "Programmeren Examen Tool 3\Programmeren Examen Tool 3.csproj", "{CAA60FFD-B291-40C4-9A08-9A0258CE2528}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{58C0BCA5-E4C9-48BC-A0CC-73EBEE0A2787}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58C0BCA5-E4C9-48BC-A0CC-73EBEE0A2787}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58C0BCA5-E4C9-48BC-A0CC-73EBEE0A2787}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA60FFD-B291-40C4-9A08-9A0258CE2528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA60FFD-B291-40C4-9A08-9A0258CE2528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA60FFD-B291-40C4-9A08-9A0258CE2528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA60FFD-B291-40C4-9A08-9A0258CE2528}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
