@@ -13,7 +13,15 @@ namespace Programmeren_Examen_Tool_2
             Belgie belg = SE.Serialize();
             Console.WriteLine("Hello World!2");
             DataProcessing dP = new DataProcessing(belg);
-            dP.FillDataBase();
+            //dP.CompletelyFillDataBase();
+            Straat test = belg.Provincies[0].Gemeenten[belg.Provincies[0].Gemeenten.Count - 1].Straten[belg.Provincies[0].Gemeenten[belg.Provincies[0].Gemeenten.Count - 1].Straten.Count - 1];
+            //nie volledig toegevoegd dus ik ga ergens een manier moeten vinden om alles te verwijderen en dan vanaf daar verder toe te voegen \o/
+            //also kill me kthx
+            dP.FillDataBaseWithProvincie(belg.Provincies[0]);
+            //dP.FillDataBaseWithProvincie(belg.Provincies[1]);
+            //dP.FillDataBaseWithProvincie(belg.Provincies[2]);
+            //dP.FillDataBaseWithProvincie(belg.Provincies[3]);
+            //dP.FillDataBaseWithProvincie(belg.Provincies[4]);
 
             //Console.WriteLine("testen");
             //Belgie belg = TestData();
@@ -51,15 +59,15 @@ namespace Programmeren_Examen_Tool_2
 
 
 
-            Gemeente testGemeente = new Gemeente("12","testGemeente");
+            Gemeente testGemeente = new Gemeente(12,"testGemeente");
             Straat testStraat1 = new Straat(10, "TestStraat1", testGraaf1,testGemeente);
             Straat testStraat2 = new Straat(20, "TestStraat2", testGraaf2, testGemeente);
-            Provincie testProvincie = new Provincie("testProvincie");
+            Provincie testProvincie = new Provincie(1,"testProvincie");
             testProvincie.VoegGemeenteToe(testGemeente);
             Belgie belg = new Belgie(new List<Provincie>() { testProvincie });
 
             DataProcessing dp = new DataProcessing(belg);
-            dp.FillDataBase();
+            dp.CompletelyFillDataBase();
 
             return belg;
         }

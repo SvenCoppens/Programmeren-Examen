@@ -20,25 +20,30 @@ namespace Programmeren_Examen_Tool_2
             SqlConnection connection = new SqlConnection(_connectionString);
             return connection;
         }
-        public void FillDataBase()
+        public void CompletelyFillDataBase()
         {
-            int i = 1;
             foreach(Provincie prov in Belgie.Provincies)
             {
-                prov.ID = i.ToString();
-                AddProvincie(prov);
-                foreach(Gemeente gem in prov.Gemeenten)
-                {
-                    AddGemeentePlusLink(gem);
-                    foreach(Straat str in gem.Straten)
-                    {
-                        AddStraat(str);
-                        AddSegmenten(str);
-                    }
-                }
-                i++;
+                FillDataBaseWithProvincie(prov);
             }
 
+        }
+        public void FillDataBaseWithProvincie(Provincie prov)
+        {
+            AddProvincie(prov);
+            foreach (Gemeente gem in prov.Gemeenten)
+            {
+                FillDatabaseWithGemeente(gem);
+            }
+        }
+        public void FillDatabaseWithGemeente(Gemeente gem)
+        {
+            AddGemeentePlusLink(gem);
+            foreach (Straat str in gem.Straten)
+            {
+                AddStraatPlusLink(str);
+                AddSegmenten(str);
+            }
         }
         public void AddProvincie(Provincie prov)
         {
@@ -52,7 +57,7 @@ namespace Programmeren_Examen_Tool_2
                     command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
                     command.Parameters.Add(new SqlParameter("@naam", SqlDbType.NVarChar));
                     command.CommandText = query;
-                    command.Parameters["@id"].Value = int.Parse(prov.ID);
+                    command.Parameters["@id"].Value = prov.Id;
                     command.Parameters["@naam"].Value = prov.Naam;
 
                     command.ExecuteNonQuery();
@@ -90,7 +95,7 @@ namespace Programmeren_Examen_Tool_2
                     linkCommand.Parameters.Add(new SqlParameter("@ProvincieId", SqlDbType.Int));
                     linkCommand.Parameters.Add(new SqlParameter("@GemeenteId", SqlDbType.Int));
                     linkCommand.CommandText = linkQuery;
-                    linkCommand.Parameters["@ProvincieId"].Value = gem.Provincie.ID;
+                    linkCommand.Parameters["@ProvincieId"].Value = gem.Provincie.Id;
                     linkCommand.Parameters["@GemeenteId"].Value = gem.Id;
 
                     gemCommand.ExecuteNonQuery();
@@ -109,7 +114,7 @@ namespace Programmeren_Examen_Tool_2
                 }
             }
         }
-        public void AddStraat(Straat straat)
+        public void AddStraatPlusLink(Straat straat)
         {
             SqlConnection connection = getConnection();
             string straatQuery = "INSERT INTO dbo.straat VALUES(@Id,@Naam)";
@@ -210,11 +215,11 @@ namespace Programmeren_Examen_Tool_2
                 else
                 {
                     //hier moet ik het segment EN de koppeling aanmaken.
-                    AddSegment(segmenten[i],str.StraatID);
+                    AddSegmentWithLink(segmenten[i],str.StraatID);
                 }
             }
         }
-        public void AddSegment(Segment seg,int straatId)
+        public void AddSegmentWithLink(Segment seg,int straatId)
         {
             //controleren of de knoop zich al in de databank bevindt(perfect mogenlijk dat 1 van de 2 er zich al in bevindt maar de andere niet, dus moet met 2 iffen werken)
             #region KnoopControle  

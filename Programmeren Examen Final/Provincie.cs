@@ -7,14 +7,15 @@ namespace Programmeren_Examen_Tool_1
     [Serializable]
     public class Provincie
     {
-        public Provincie(string naam)
+        public Provincie(int id,string naam)
         {
+            Id=id;
             Naam = naam;
             Gemeenten = new List<Gemeente>();
         }
         public List<Gemeente> Gemeenten { get; set; }
         public string Naam { get; set; }
-        public string ID { get; set; }
+        public int Id { get; set; }
         public void VoegGemeenteToe(Gemeente gemeente)
         {
             Gemeenten.Add(gemeente);
@@ -31,12 +32,12 @@ namespace Programmeren_Examen_Tool_1
             return obj is Provincie provincie &&
                    EqualityComparer<List<Gemeente>>.Default.Equals(Gemeenten, provincie.Gemeenten) &&
                    Naam == provincie.Naam &&
-                   ID == provincie.ID;
+                   Id == provincie.Id;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Gemeenten, Naam, ID);
+            return HashCode.Combine(Gemeenten, Naam, Id);
         }
     }
 }

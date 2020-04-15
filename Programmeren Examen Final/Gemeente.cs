@@ -7,14 +7,14 @@ namespace Programmeren_Examen_Tool_1
     [Serializable]
     public class Gemeente
     {
-        public Gemeente(string id,string naam)
+        public Gemeente(int id,string naam)
         {
             Id = id;
             Naam = naam;
             Straten = new List<Straat>();
         }
         public string Naam { get; set; }
-        public string Id { get; set; }
+        public int Id { get; set; }
         public Provincie Provincie { get; set; }
         public List<Straat> Straten { get; set; }
         public override string ToString()

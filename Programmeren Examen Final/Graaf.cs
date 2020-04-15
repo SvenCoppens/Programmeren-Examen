@@ -7,7 +7,7 @@ namespace Programmeren_Examen_Tool_1
     [Serializable]
     public class Graaf
     {
-        public Graaf(int ID, Dictionary<Knoop,List<Segment>> lijst)
+        public Graaf(int ID,Dictionary<Knoop,List<Segment>> lijst)
         {
             GraafID = ID;
             Map = lijst;

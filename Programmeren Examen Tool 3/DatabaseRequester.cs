@@ -7,7 +7,7 @@ using System.Data;
 
 namespace Programmeren_Examen_Tool_3
 {
-    class DatabaseRequests
+    class DatabaseRequester
     {
         private string _connectionString = @"Data Source=DESKTOP-VCI7746\SQLEXPRESS;Initial Catalog=Prog3Examen;Integrated Security=True";
         private SqlConnection getConnection()
@@ -47,7 +47,6 @@ namespace Programmeren_Examen_Tool_3
                 }
             }
         }
-
         public Straat ReturnStraatVoorStraatId(int straatId)
         {
             List<Punt> straatIds = new List<Punt>();
@@ -153,11 +152,10 @@ namespace Programmeren_Examen_Tool_3
                         segmenten.Add(new Segment(segmentIds[i], beginKnoop, eindKnoop, punten));
                     }
 
-                    Graaf tempGraaf = StelGraafOp(segmenten);
+                    Graaf tempGraaf = StelGraafOp(segmenten,straatId);
 
-                    Provincie tempProv = new Provincie(provincieNaam);
-                    Gemeente tempGemeente = new Gemeente(gemeenteId.ToString(), gemeenteNaam);
-                    tempProv.ID = provincieId.ToString();
+                    Provincie tempProv = new Provincie(provincieId,provincieNaam);
+                    Gemeente tempGemeente = new Gemeente(gemeenteId, gemeenteNaam);
                     tempProv.VoegGemeenteToe(tempGemeente);
                     Straat returnStraat = new Straat(straatId, straatnaam, tempGraaf, tempGemeente);
                     return returnStraat;
@@ -266,7 +264,6 @@ namespace Programmeren_Examen_Tool_3
         }
         public Provincie ProvincieRapport(string provincieNaam)
         {
-            Provincie provincie = new Provincie(provincieNaam);
             SqlConnection connection = getConnection();
             string provincieQuery = "SELECT * FROM dbo.provincie JOIN provincieGemeenteLink ON provincie.Id = provincieGemeenteLink.provincieId WHERE Naam = @ProvincieNaam";
 
@@ -281,6 +278,7 @@ namespace Programmeren_Examen_Tool_3
                     SqlDataReader reader = provincieCommand.ExecuteReader();
                     reader.Read();
                     int provincieId = (int)reader["Id"];
+                    Provincie provincie = new Provincie(provincieId ,provincieNaam);
                     List<int> gemeenteIds = new List<int> { (int)reader["GemeenteId"] };
                     while (reader.Read())
                     {
@@ -388,8 +386,7 @@ namespace Programmeren_Examen_Tool_3
 
             }
         }
-
-        public Graaf StelGraafOp(List<Segment> segmenten)
+        public Graaf StelGraafOp(List<Segment> segmenten,int straatId)
         {
             Dictionary<Knoop, List<Segment>> map = new Dictionary<Knoop, List<Segment>>();
 
@@ -408,10 +405,9 @@ namespace Programmeren_Examen_Tool_3
                 else
                     map.Add(seg.EindKnoop, new List<Segment> { seg });
             }
-            Graaf result = new Graaf(ID_Generator.GraafIDToekennen(), map);
+            Graaf result = new Graaf(straatId, map);
             return result;
         }
-
         public Gemeente ReturnGemeenteVoorGemeenteId(int gemeenteId)
         {
             string gemeenteQuery = "SELECT * FROM dbo.gemeente WHERE Id=@GemeenteId";
@@ -456,7 +452,7 @@ namespace Programmeren_Examen_Tool_3
                     List<int> straatIds = new List<int>();
                     List<string> straatNamen = new List<string>();
                     reader = straatCommand.ExecuteReader();
-                    Gemeente gemeente = new Gemeente(gemeenteId.ToString(), gemeenteNaam);
+                    Gemeente gemeente = new Gemeente(gemeenteId, gemeenteNaam);
                     while (reader.Read())
                     {
                         straatIds.Add((int)reader["Id"]);
@@ -509,7 +505,7 @@ namespace Programmeren_Examen_Tool_3
                             segmenten.Add(new Segment(segmentIds[i], beginKnoop, eindKnoop, punten));
                         }
 
-                        Graaf tempGraaf = StelGraafOp(segmenten);
+                        Graaf tempGraaf = StelGraafOp(segmenten,straatIds[index]);
                         Straat tempstraat = new Straat(straatIds[index], straatNamen[index], tempGraaf, gemeente);
 
                     }

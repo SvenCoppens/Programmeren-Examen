@@ -9,7 +9,7 @@ namespace Programmeren_Examen_Tool_3
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            DatabaseRequests dR = new DatabaseRequests();
+            DatabaseRequester dR = new DatabaseRequester();
             //Straat straat1 = dR.ReturnStraatVoorStraatId(486);
             //Straat straat2 = dR.ReturnStraatVoorStraatNaam("Antwerpen", "Boomstraat");
             //Straat straat3 = dR.ReturnStraatVoorStraatNaam("Aartselaar", "Boomsesteenweg");

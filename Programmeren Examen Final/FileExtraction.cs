@@ -103,7 +103,7 @@ namespace Programmeren_Examen_Tool_1
                     Dictionary<Knoop, List<Segment>> tmp = new Dictionary<Knoop, List<Segment>>();
                     tmp.Add(beginknoop, new List<Segment> { segment });
                     tmp.Add(eindknoop, new List<Segment> { segment });
-                    Graaf temp = new Graaf(ID_Generator.GraafIDToekennen(), tmp);
+                    Graaf temp = new Graaf(int.Parse(straatID), tmp);
                     StraatBouwer.Add(straatID, temp);
                 }
             }

@@ -8,7 +8,7 @@ namespace Programmeren_Examen_Tool_1
 {
     class Unzipper
     {
-        public static DirectoryInfo Unzip(string path)
+        public static void Unzip(string path)
         {
             string exitpath = path.Substring(0, path.Length - 4);
             if (Directory.Exists(exitpath))
@@ -16,7 +16,9 @@ namespace Programmeren_Examen_Tool_1
                 DeleteCompletely(exitpath);
             }
             ZipFile.ExtractToDirectory(path, exitpath);
-            return new DirectoryInfo(exitpath);
+            string tempPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\WRdata-master";
+            ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRdata.zip"), tempPath);
+            ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRstraatnamen.zip"), tempPath);
         }
         public static void DeleteCompletely(string Path)
         {

@@ -2,119 +2,72 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 
 namespace Programmeren_Examen_Tool_1
 {
     class ReportWriter
     {
-        Dictionary<string, Straat> Straten;
-        List<Provincie> Provincies;
+        Belgie Belg;
         public string Wegenpath;
-        public ReportWriter(Dictionary<string, Straat> straten)
+        public ReportWriter(Belgie belg,string path)
         {
-            Straten = straten;
-            HaalProvincies();
-            Wegenpath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata";
+            Belg = belg;
+            Wegenpath = path;
         }
         public void CreateReport()
         {
-            using (StreamWriter writer = File.CreateText(Path.Combine(Wegenpath, "Rapport.txt")))
+            int totaalAantalStraten = 0;
+            int[] aantalStraten = new int[Belg.Provincies.Count];
+            List<Provincie> provincies = Belg.Provincies.OrderBy(p => p.Naam).ToList();
+            for(int i=0;i< Belg.Provincies.Count;i++)
             {
-                writer.WriteLine($"Totaal aantal straten: {Straten.Count}");
+                provincies[i].Gemeenten = provincies[i].Gemeenten.OrderBy(g => g.Naam).ToList();
+                foreach(Gemeente gem in provincies[i].Gemeenten)
+                {
+                    gem.Straten = gem.Straten.OrderBy(s => s.Lengte).ToList();
+                    totaalAantalStraten += gem.Straten.Count;
+                    aantalStraten[i] += gem.Straten.Count;
+                }
+            }
+            using (StreamWriter writer = File.CreateText(Path.Combine(Wegenpath, "Rapport tool 1.txt")))
+            {
+                writer.WriteLine($"Totaal aantal straten: {totaalAantalStraten}");
                 writer.WriteLine();
                 writer.WriteLine("Aantal straten per provincie");
-                foreach (Provincie prov in Provincies)
+                for(int i = 0; i < aantalStraten.Length; i++)
                 {
-                    int aantalStraten = 0;
-                    foreach (Gemeente gem in prov.Gemeenten)
-                    {
-                        aantalStraten += gem.Straten.Count;
-                    }
-                    writer.WriteLine($"    -   {prov.Naam}:{aantalStraten}");
-
+                    writer.WriteLine($"    -   {provincies[i].Naam}:{aantalStraten[i]}");
                 }
-
-                foreach (Provincie prov in Provincies)
+                writer.WriteLine();
+                foreach (Provincie prov in Belg.Provincies)
                 {
                     writer.WriteLine($"Straatinfo {prov.Naam}");
                     foreach (Gemeente gem in prov.Gemeenten)
                     {
 
-                        writer.WriteLine($"    -{gem.Naam}: {gem.Straten.Count}, {gem.BerekenTotaleLengte()}");
-                        gem.Straten.Sort(new StraatLengteEerst());
+                        writer.WriteLine($"    -{gem.Naam}: {gem.Straten.Count} straten met een totale lengte van: {gem.BerekenTotaleLengte()}m");
+                        //voor het geval dat er meerder straten zijn met dezelfde lengte
                         int i = 0;
                         if (gem.Straten.Count != 0)
                         {
                             while (gem.Straten[i].Lengte == gem.Straten[0].Lengte)
                             {
-                                writer.WriteLine($"         -   {gem.Straten[i].StraatID},{gem.Straten[i].Naam},{gem.Straten[i].Lengte}");
+                                writer.WriteLine($"         Kortste Straat - ID: {gem.Straten[i].StraatID}; {gem.Straten[i].Naam}: {gem.Straten[i].Lengte}m");
                                 i++;
                             }
 
                             i = gem.Straten.Count - 1;
                             while (gem.Straten[i].Lengte == gem.Straten[gem.Straten.Count - 1].Lengte)
                             {
-                                writer.WriteLine($"         -   {gem.Straten[i].StraatID},{gem.Straten[i].Naam},{gem.Straten[i].Lengte}");
+                                writer.WriteLine($"         Langste Straat - ID: {gem.Straten[i].StraatID}; {gem.Straten[i].Naam}: {gem.Straten[i].Lengte}m");
                                 i--;
                             }
                         }
                     }
+                    writer.WriteLine();
                 }
             }
         }
-        public void WriteReport()
-        {
-            Console.WriteLine($"Totaal aantal straten: {Straten.Count}");
-            Console.WriteLine();
-            Console.WriteLine("Aantal straten per provincie");
-            foreach(Provincie prov in Provincies)
-            {
-                int aantalStraten = 0;
-                foreach(Gemeente gem in prov.Gemeenten)
-                {
-                    aantalStraten += gem.Straten.Count;
-                }
-                Console.WriteLine($"    -   {prov.Naam}:{aantalStraten}");
-                
-            }
-
-            foreach (Provincie prov in Provincies)
-            {
-                Console.WriteLine($"Straatinfo {prov.Naam}");
-                foreach(Gemeente gem in prov.Gemeenten)
-                {
-                    
-                    Console.WriteLine($"    -{gem.Naam}: {gem.Straten.Count}, {gem.BerekenTotaleLengte()}");
-                    gem.Straten.Sort( new StraatLengteEerst());
-                    int i = 0;
-                    if (gem.Straten.Count != 0)
-                    {
-                        while (gem.Straten[i].Lengte == gem.Straten[0].Lengte)
-                        {
-                            Console.WriteLine($"         -   {gem.Straten[i].StraatID},{gem.Straten[i].Naam},{gem.Straten[i].Lengte}");
-                            i++;
-                        }
-
-                        i = gem.Straten.Count - 1;
-                        while (gem.Straten[i].Lengte == gem.Straten[gem.Straten.Count - 1].Lengte)
-                        {
-                            Console.WriteLine($"         -   {gem.Straten[i].StraatID},{gem.Straten[i].Naam},{gem.Straten[i].Lengte}");
-                            i--;
-                        }
-                    }
-                }
-            }
-        }
-        public void HaalProvincies()
-        {
-            List<Provincie> temp = new List<Provincie>();
-            foreach(var x in Straten)
-            {
-                if (!temp.Contains(x.Value.Gemeente.Provincie))
-                    temp.Add(x.Value.Gemeente.Provincie);
-            }
-            Provincies = temp;
-        }
-        
     }
 }

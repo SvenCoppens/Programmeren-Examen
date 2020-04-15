@@ -11,7 +11,7 @@ namespace Programmeren_Examen_Tool_1
         {
             List<string> filter = new List<string>();
             Dictionary<string, List<string>> ProvincieIDGemeenteIDLink = new Dictionary<string, List<string>>();
-            Dictionary<string, List<String>> gemeenteIdStraatID = new Dictionary<string, List<string>>();
+            Dictionary<string, List<string>> gemeenteIdStraatID = new Dictionary<string, List<string>>();
 
             Dictionary<string, string> GemeenteIdEnNaam = new Dictionary<string, string>();
             Dictionary<string, string> straatIdEnNaam = new Dictionary<string, string>();
@@ -46,7 +46,7 @@ namespace Programmeren_Examen_Tool_1
                         {
                             if (!provincies.ContainsKey(provincieId))
                             {
-                                provincies.Add(provincieId, new Provincie(provincieNaam));
+                                provincies.Add(provincieId, new Provincie(int.Parse(provincieId),provincieNaam));
                             }
                             if (ProvincieIDGemeenteIDLink.ContainsKey(provincieId))
                             {
@@ -81,7 +81,7 @@ namespace Programmeren_Examen_Tool_1
             {
                 foreach (string gemeenteId in entry.Value)
                 {
-                    Gemeente temp = new Gemeente(gemeenteId, GemeenteIdEnNaam[gemeenteId]);
+                    Gemeente temp = new Gemeente(int.Parse(gemeenteId), GemeenteIdEnNaam[gemeenteId]);
                     provincies[entry.Key].VoegGemeenteToe(temp);
                     gemeenten.Add(gemeenteId, temp);
                 }
@@ -131,7 +131,7 @@ namespace Programmeren_Examen_Tool_1
                         string naam = straatIdEnNaam[straatId];
                         Graaf tempGraaf = straatIdGraafKoppeling[straatId];
                         Gemeente tempGemeente = gemeenten[entry.Key];
-                        Straat tempStraat = new Straat(ID_Generator.StraatIDToekennen(), naam, tempGraaf, tempGemeente);
+                        Straat tempStraat = new Straat(int.Parse(straatId), naam, tempGraaf, tempGemeente);
                         straten.Add(straatId, tempStraat);
                     }
                 }
@@ -144,27 +144,6 @@ namespace Programmeren_Examen_Tool_1
                     gemeente.Value.Provincie.Gemeenten.Remove(gemeente.Value);
                 }
             }
-
-                //poging te verbeteren
-                //Dictionary<string, string> straatIdGemeenteId = new Dictionary<string, string>();
-                //foreach(KeyValuePair<string,List<string>> IDs in gemeenteIdStraatID)
-                //{
-                //    foreach(string straatId in IDs.Value)
-                //    {
-                //        straatIdGemeenteId.Add(straatId, IDs.Key);
-                //    }
-                //}
-                //foreach(KeyValuePair<string, Graaf> IDGraaf in straatIdGraafKoppeling)
-                //{
-                //    if (straatIdGemeenteId.ContainsKey(IDGraaf.Key))
-                //    {
-                //        string naam = straatIdEnNaam[IDGraaf.Key];
-                //        Graaf tempGraaf = IDGraaf.Value;
-                //        Gemeente tempGemeente = gemeenten[straatIdGemeenteId[IDGraaf.Key]];
-                //        Straat tempStraat = new Straat(ID_Generator.StraatIDToekennen(), naam, tempGraaf, tempGemeente);
-                //        straten.Add(IDGraaf.Key, tempStraat);
-                //    }
-                //}
                 return provincies;
 
         }

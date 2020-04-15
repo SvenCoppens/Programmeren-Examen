@@ -8,11 +8,16 @@ namespace Programmeren_Examen_Tool_1
     {
         static void Main()
         {
+            //setup
             Console.WriteLine("Hello World!");
-            string path = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata";
+            string zipPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata.zip";
+            Unzipper.Unzip(zipPath);
+            string path = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\WRdata-master";
             FileExtraction fe = new FileExtraction();
-            Dictionary<string, Graaf> straatIdGraafKoppeling = fe.MaakSegmenten(path);
             StraatNaamExtraction sne = new StraatNaamExtraction();
+
+            Console.WriteLine("deel 1");
+            Dictionary<string, Graaf> straatIdGraafKoppeling = fe.MaakSegmenten(path);
             Console.WriteLine("deel 2");
             Dictionary<string, Provincie> provincies = sne.Extract(path, straatIdGraafKoppeling);
             List<Provincie> provinciesLijst = new List<Provincie>();
@@ -20,12 +25,14 @@ namespace Programmeren_Examen_Tool_1
             {
                 provinciesLijst.Add(x.Value);
             }
-            //ReportWriter rw = new ReportWriter(straten);
-            //rw.CreateReport();
-            //Serializer serializer = new Serializer(provinciesLijst);
-            //serializer.Serialize();
             Belgie belgie = new Belgie(provinciesLijst);
-            Serializer serializer = new Serializer(belgie);
+
+            string customPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\";
+            Console.WriteLine("Writing Report");
+            ReportWriter rw = new ReportWriter(belgie,customPath);
+            rw.CreateReport();
+
+            Serializer serializer = new Serializer(belgie,customPath);
             serializer.Serialize();
             Console.WriteLine("donezo");
 
