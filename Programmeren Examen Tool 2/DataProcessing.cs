@@ -30,7 +30,8 @@ namespace Programmeren_Examen_Tool_2
         }
         public void FillDataBaseWithProvincie(Provincie prov)
         {
-            AddProvincie(prov);
+            //if(!CheckProvincie(prov))   //dit verwijderen na vullen i guess?
+                AddProvincie(prov);
             foreach (Gemeente gem in prov.Gemeenten)
             {
                 FillDatabaseWithGemeente(gem);
@@ -38,10 +39,13 @@ namespace Programmeren_Examen_Tool_2
         }
         public void FillDatabaseWithGemeente(Gemeente gem)
         {
-            AddGemeentePlusLink(gem);
+            //if (!CheckGemeente(gem)) //dit verwijderen na vullen i guess?
+                AddGemeentePlusLink(gem);
             foreach (Straat str in gem.Straten)
             {
-                AddStraatPlusLink(str);
+                //if(!CheckStraat(str))//dit verwijderen na vullen i guess?
+                    AddStraatPlusLink(str);
+
                 AddSegmenten(str);
             }
         }
@@ -209,7 +213,8 @@ namespace Programmeren_Examen_Tool_2
                 if (CheckSegment(segmenten[i]))
                 {
                     //hier moet ik enkel de koppeling tussen het segment en de straat aanmaken
-                    LinkSegment(segmenten[i],str.StraatID);
+                    //if (!CheckSegmentLink(segmenten[i], str.StraatID))//dit verwijderen na vullen i guess?
+                        LinkSegment(segmenten[i],str.StraatID);
                 }
                 //als het Segment zich nog niet in de databank bevindt.
                 else
@@ -417,5 +422,152 @@ namespace Programmeren_Examen_Tool_2
                 }
             }
         }
+        public bool CheckGemeente(Gemeente gem)
+        {
+            SqlConnection connection = getConnection();
+            string query = "SELECT COUNT(*) AS count FROM dbo.gemeente WHERE Id=@Id";
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+                SqlParameter paramId = new SqlParameter();
+                paramId.ParameterName = "@Id";
+                paramId.DbType = DbType.Int32;
+                paramId.Value = gem.Id;
+                command.Parameters.Add(paramId);
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    int knoopCount = (int)reader["count"];
+
+                    if (knoopCount == 1)
+                    {
+                        return true;
+                    }
+                    else return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    throw new Exception("Incorrect SQL syntax in CheckGemeente");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+        public bool CheckProvincie(Provincie prov)
+        {
+            SqlConnection connection = getConnection();
+            string query = "SELECT COUNT(*) AS count FROM dbo.provincie WHERE Id=@Id";
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+                SqlParameter paramId = new SqlParameter();
+                paramId.ParameterName = "@Id";
+                paramId.DbType = DbType.Int32;
+                paramId.Value = prov.Id;
+                command.Parameters.Add(paramId);
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    int knoopCount = (int)reader["count"];
+
+                    if (knoopCount == 1)
+                    {
+                        return true;
+                    }
+                    else return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    throw new Exception("Incorrect SQL syntax in CheckProvincie");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+        public bool CheckStraat(Straat str)
+        {
+            SqlConnection connection = getConnection();
+            string query = "SELECT COUNT(*) AS count FROM dbo.straat WHERE Id=@Id";
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+                SqlParameter paramId = new SqlParameter();
+                paramId.ParameterName = "@Id";
+                paramId.DbType = DbType.Int32;
+                paramId.Value = str.StraatID;
+                command.Parameters.Add(paramId);
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    int knoopCount = (int)reader["count"];
+
+                    if (knoopCount == 1)
+                    {
+                        return true;
+                    }
+                    else return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    throw new Exception("Incorrect SQL syntax in CheckStraat");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+        public bool CheckSegmentLink(Segment seg,int straatId)
+        {
+            SqlConnection connection = getConnection();
+            string query = "SELECT COUNT(*) AS count FROM dbo.straatSegmenten WHERE StraatId=@Id AND SegmentId=@SegId";
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+                SqlParameter paramId = new SqlParameter();
+                paramId.ParameterName = "@Id";
+                paramId.DbType = DbType.Int32;
+                paramId.Value = straatId;
+                command.Parameters.Add(paramId);
+                command.Parameters.Add(new SqlParameter("@SegId", SqlDbType.Int));
+                command.Parameters["@SegId"].Value = seg.SegmentID;
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    int knoopCount = (int)reader["count"];
+
+                    if (knoopCount == 1)
+                    {
+                        return true;
+                    }
+                    else return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    throw new Exception("Incorrect SQL syntax in CheckStraat");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
     }
 }

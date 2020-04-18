@@ -30,7 +30,7 @@ namespace Programmeren_Examen_Tool_1
             string customPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\";
             Console.WriteLine("Writing Report");
             ReportWriter rw = new ReportWriter(belgie,customPath);
-            rw.CreateReport();
+            rw.CompleteReport();
 
             Serializer serializer = new Serializer(belgie,customPath);
             serializer.Serialize();

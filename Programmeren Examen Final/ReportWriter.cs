@@ -8,19 +8,18 @@ namespace Programmeren_Examen_Tool_1
 {
     class ReportWriter
     {
-        Belgie Belg;
-        public string Wegenpath;
-        public ReportWriter(Belgie belg,string path)
+        Belgie belg;
+        public string ReportPath;
+        public ReportWriter(string exportPath)
         {
-            Belg = belg;
-            Wegenpath = path;
+            ReportPath = exportPath;
         }
-        public void CreateReport()
+        public void CompleteReport(Belgie belg)
         {
             int totaalAantalStraten = 0;
-            int[] aantalStraten = new int[Belg.Provincies.Count];
-            List<Provincie> provincies = Belg.Provincies.OrderBy(p => p.Naam).ToList();
-            for(int i=0;i< Belg.Provincies.Count;i++)
+            int[] aantalStraten = new int[belg.Provincies.Count];
+            List<Provincie> provincies = belg.Provincies.OrderBy(p => p.Naam).ToList();
+            for(int i=0;i< belg.Provincies.Count;i++)
             {
                 provincies[i].Gemeenten = provincies[i].Gemeenten.OrderBy(g => g.Naam).ToList();
                 foreach(Gemeente gem in provincies[i].Gemeenten)
@@ -30,7 +29,7 @@ namespace Programmeren_Examen_Tool_1
                     aantalStraten[i] += gem.Straten.Count;
                 }
             }
-            using (StreamWriter writer = File.CreateText(Path.Combine(Wegenpath, "Rapport tool 1.txt")))
+            using (StreamWriter writer = File.CreateText(Path.Combine(ReportPath, "Rapport tool 1.txt")))
             {
                 writer.WriteLine($"Totaal aantal straten: {totaalAantalStraten}");
                 writer.WriteLine();
@@ -40,7 +39,7 @@ namespace Programmeren_Examen_Tool_1
                     writer.WriteLine($"    -   {provincies[i].Naam}:{aantalStraten[i]}");
                 }
                 writer.WriteLine();
-                foreach (Provincie prov in Belg.Provincies)
+                foreach (Provincie prov in belg.Provincies)
                 {
                     writer.WriteLine($"Straatinfo {prov.Naam}");
                     foreach (Gemeente gem in prov.Gemeenten)

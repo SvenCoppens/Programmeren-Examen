@@ -351,7 +351,7 @@ namespace Programmeren_Examen_Tool_3
                         while (reader.Read())
                         {
                             int tempstraatId = (int)reader["StraatId"];
-                            if (!straatIds.Contains(tempstraatId))
+                            if (!straatIds.Contains(tempstraatId) && tempstraatId != straatId)
                                 straatIds.Add(tempstraatId);
 
                         }
@@ -361,7 +361,7 @@ namespace Programmeren_Examen_Tool_3
                         while (reader.Read())
                         {
                             int tempstraatId = (int)reader["StraatId"];
-                            if (!straatIds.Contains(tempstraatId))
+                            if (!straatIds.Contains(tempstraatId) && tempstraatId!=straatId)
                                 straatIds.Add(tempstraatId);
 
                         }

@@ -12,14 +12,26 @@ namespace Programmeren_Examen_Tool_1
         {
             return Graaf.getKnopen();
         }
-        public void showStraat()
+        public void ShowStraat()
         {
-            Console.Write($"Straat: {StraatID}: {Naam}: [");
-            foreach (Knoop entry in GetKnopen())
+            List<Segment> segmenten = Graaf.GetSegmenten();
+            Console.WriteLine($"{StraatID}, {Naam}, {Gemeente.Naam}, {Gemeente.Provincie.Naam}");
+            Console.WriteLine($"aantal knopen: {Graaf.getKnopen().Count}");
+            Console.WriteLine($"aantal wegsegmenten: {segmenten.Count}");
+            foreach (KeyValuePair<Knoop, List<Segment>> pair in Graaf.Map)
             {
-                Console.Write($" {entry},");
+                Punt temp = pair.Key.SegmentPunt;
+                Console.WriteLine($"Knoop[{pair.Key.KnoopID},[{temp.X};{temp.Y}]]");
+                foreach (Segment seg in pair.Value)
+                {
+                    Console.WriteLine($"     [segment:{seg.SegmentID},begin:{seg.BeginKnoop.KnoopID},eind:{seg.EindKnoop.KnoopID}]");
+                    foreach (Punt punt in seg.Vertices)
+                    {
+                        Console.WriteLine($"             ({punt.X};{punt.Y})");
+                    }
+                }
+
             }
-            Console.Write("]");
         }
         public Straat(int Id,string naam, Graaf graaf,Gemeente gemeente)
         {

@@ -14,10 +14,8 @@ namespace Programmeren_Examen_Tool_2
             Console.WriteLine("Hello World!2");
             DataProcessing dP = new DataProcessing(belg);
             //dP.CompletelyFillDataBase();
-            Straat test = belg.Provincies[0].Gemeenten[belg.Provincies[0].Gemeenten.Count - 1].Straten[belg.Provincies[0].Gemeenten[belg.Provincies[0].Gemeenten.Count - 1].Straten.Count - 1];
-            //nie volledig toegevoegd dus ik ga ergens een manier moeten vinden om alles te verwijderen en dan vanaf daar verder toe te voegen \o/
-            //also kill me kthx
-            dP.FillDataBaseWithProvincie(belg.Provincies[0]);
+            
+            //dP.FillDataBaseWithProvincie(belg.Provincies[0]);
             //dP.FillDataBaseWithProvincie(belg.Provincies[1]);
             //dP.FillDataBaseWithProvincie(belg.Provincies[2]);
             //dP.FillDataBaseWithProvincie(belg.Provincies[3]);

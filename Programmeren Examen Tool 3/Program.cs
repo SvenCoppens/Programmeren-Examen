@@ -10,13 +10,20 @@ namespace Programmeren_Examen_Tool_3
         {
             Console.WriteLine("Hello World!");
             DatabaseRequester dR = new DatabaseRequester();
+            ReportWriter rW = new ReportWriter(@"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\Rapporten");
             //Straat straat1 = dR.ReturnStraatVoorStraatId(486);
             //Straat straat2 = dR.ReturnStraatVoorStraatNaam("Antwerpen", "Boomstraat");
             //Straat straat3 = dR.ReturnStraatVoorStraatNaam("Aartselaar", "Boomsesteenweg");
             //List<string> straten = dR.StraatNamenVoorGemeente("Antwerpen");
-            //Provincie antwerpen = dR.ProvincieRapport("Antwerpen");
-            List<Straat> straten = dR.AangrenzendeStraten(114);
-            Console.WriteLine();
+            #region provincieRapport
+            Provincie antwerpen = dR.ProvincieRapport("Oost-Vlaanderen");
+            rW.ProvincieRapport(antwerpen);
+            #endregion
+            #region Aangrenzende Straten
+            //List<Straat> straten = dR.AangrenzendeStraten(114);
+            //rW.AangrenzendeStratenReport(straten, dR.ReturnStraatVoorStraatId(114));
+            #endregion
+            Console.WriteLine("Done");
         }
     }
 }

@@ -54,6 +54,19 @@ namespace Programmeren_Examen_Tool_1
         {
             return (GraafID.GetHashCode() ^ Map.GetHashCode());
         }
+        public List<Segment> GetSegmenten()
+        {
+            List<Segment> segmenten = new List<Segment>();
+            foreach (KeyValuePair<Knoop, List<Segment>> pair in Map)
+            {
+                foreach(Segment seg in pair.Value)
+                {
+                    if (!segmenten.Contains(seg))
+                        segmenten.Add(seg);
+                }
+            }
+            return segmenten;
+        }
 
     }
 }
