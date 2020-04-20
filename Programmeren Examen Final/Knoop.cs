@@ -27,9 +27,6 @@ namespace Programmeren_Examen_Tool_1
             if (obj is Knoop)
             {
                 Knoop temp = obj as Knoop;
-                bool knoop = KnoopID == temp.KnoopID;
-                bool segment = SegmentPunt == temp.SegmentPunt;
-
                 return (KnoopID == temp.KnoopID && SegmentPunt.Equals(temp.SegmentPunt));
             }
             else return false;

@@ -13,12 +13,19 @@ namespace Programmeren_Examen_Tool_1
             string exitpath = path.Substring(0, path.Length - 4);
             if (Directory.Exists(exitpath))
             {
-                DeleteCompletely(exitpath);
+                Console.WriteLine("unzipped folder seems to already exist, do you wish to delete it and unzip again? \"Y\" for yes");
+                if (Console.ReadLine() == "Y")
+                {
+                    DeleteCompletely(exitpath);
+                    ZipFile.ExtractToDirectory(path, exitpath);
+                    string tempPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\WRdata-master";
+                    ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRdata.zip"), tempPath);
+                    ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRstraatnamen.zip"), tempPath);
+                }
+                else
+                    Console.WriteLine("no changes were made");
             }
-            ZipFile.ExtractToDirectory(path, exitpath);
-            string tempPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\WRdata-master";
-            ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRdata.zip"), tempPath);
-            ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRstraatnamen.zip"), tempPath);
+            
         }
         public static void DeleteCompletely(string Path)
         {

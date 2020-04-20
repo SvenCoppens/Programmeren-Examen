@@ -18,8 +18,12 @@ namespace Programmeren_Examen_Tool_1
         }
         public void Serialize()
         {
+            string exitPath = Path.Combine(BinPath, "Belgie.bin");
+            if (File.Exists(exitPath))
+                File.Delete(exitPath);
+
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(Path.Combine(BinPath, "Belgie.bin"), FileMode.Create, FileAccess.Write, FileShare.None);
+            Stream stream = new FileStream(exitPath, FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, Belg);
             stream.Close();
         }

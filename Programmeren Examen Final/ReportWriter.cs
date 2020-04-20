@@ -8,7 +8,6 @@ namespace Programmeren_Examen_Tool_1
 {
     class ReportWriter
     {
-        Belgie belg;
         public string ReportPath;
         public ReportWriter(string exportPath)
         {
@@ -16,6 +15,12 @@ namespace Programmeren_Examen_Tool_1
         }
         public void CompleteReport(Belgie belg)
         {
+            //het oude rapport verwijderen indien er een is
+            string exitPath = Path.Combine(ReportPath, "Rapport tool 1.txt");
+            if (File.Exists(exitPath))
+                File.Delete(exitPath);
+
+
             int totaalAantalStraten = 0;
             int[] aantalStraten = new int[belg.Provincies.Count];
             List<Provincie> provincies = belg.Provincies.OrderBy(p => p.Naam).ToList();
@@ -29,7 +34,8 @@ namespace Programmeren_Examen_Tool_1
                     aantalStraten[i] += gem.Straten.Count;
                 }
             }
-            using (StreamWriter writer = File.CreateText(Path.Combine(ReportPath, "Rapport tool 1.txt")))
+
+            using (StreamWriter writer = File.CreateText(exitPath))
             {
                 writer.WriteLine($"Totaal aantal straten: {totaalAantalStraten}");
                 writer.WriteLine();
@@ -67,6 +73,7 @@ namespace Programmeren_Examen_Tool_1
                     writer.WriteLine();
                 }
             }
+            Console.WriteLine($"Report was placed in {exitPath}");
         }
     }
 }

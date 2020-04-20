@@ -12,6 +12,10 @@ namespace Programmeren_Examen_Tool_1
         {
             return Graaf.getKnopen();
         }
+        public List<Segment> GetSegmenten()
+        {
+            return Graaf.GetSegmenten();
+        }
         public void ShowStraat()
         {
             List<Segment> segmenten = Graaf.GetSegmenten();
@@ -78,6 +82,11 @@ namespace Programmeren_Examen_Tool_1
                 lengte += seg.Lengte;
             }
             Lengte = lengte;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Naam, Graaf, StraatID, Gemeente, Lengte);
         }
     }
 }
