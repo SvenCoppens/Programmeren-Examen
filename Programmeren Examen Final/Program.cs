@@ -11,7 +11,7 @@ namespace Programmeren_Examen_Tool_1
             //setup
             string zipPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata.zip";
             string unzippedPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\WRdata-master";
-            string reportPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\Rapporten";
+            string reportPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\Rapporten";
             string serializingPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata";
 
             Unzipper.Unzip(zipPath);

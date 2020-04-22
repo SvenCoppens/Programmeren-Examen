@@ -49,7 +49,7 @@ namespace Programmeren_Examen_Tool_1
         public Graaf Graaf { get; set; }
         public int StraatID { get; set; }
         public Gemeente Gemeente { get; set; }
-        public double Lengte { get; set; }
+        public double Lengte { get; private set; }
         public override string ToString()
         {
             return $"Straat: {Naam}, in: {Gemeente.Naam},Graaf: {Graaf.GraafID}";

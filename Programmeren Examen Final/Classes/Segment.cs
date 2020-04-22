@@ -20,7 +20,7 @@ namespace Programmeren_Examen_Tool_1
         public Knoop EindKnoop { get; set; }
         public int SegmentID { get; set; }
         public List<Punt> Vertices { get; set; }
-        public double Lengte { get; set; }
+        public double Lengte { get; private set; }
         public override bool Equals(object obj)
         {
             if (obj is Segment)

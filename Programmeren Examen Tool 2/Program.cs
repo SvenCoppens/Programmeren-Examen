@@ -8,12 +8,14 @@ namespace Programmeren_Examen_Tool_2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Starting unserializing");
             string binPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\Belgie.bin";
             SerializationExtraction SE = new SerializationExtraction();
+
             Belgie belg = SE.Unserialize(binPath);
-            Console.WriteLine("Hello World!2");
             DataProcessing dP = new DataProcessing(belg);
+
+            Console.WriteLine("started filling database");
             //dP.CompletelyFillDataBase();
             //dP.FillDataBaseWithProvincie(belg.Provincies[0]);
             //dP.FillDataBaseWithProvincie(belg.Provincies[1]);

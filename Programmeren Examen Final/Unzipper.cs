@@ -17,14 +17,13 @@ namespace Programmeren_Examen_Tool_1
                 if (Console.ReadLine() == "Y")
                 {
                     DeleteCompletely(exitpath);
-                    ZipFile.ExtractToDirectory(path, exitpath);
-                    string tempPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\WRdata-master";
-                    ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRdata.zip"), tempPath);
-                    ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRstraatnamen.zip"), tempPath);
+                    ActualUnzip(path, exitpath);
                 }
                 else
                     Console.WriteLine("no changes were made");
             }
+            else
+                ActualUnzip(path, exitpath);
             
         }
         public static void DeleteCompletely(string Path)
@@ -35,6 +34,13 @@ namespace Programmeren_Examen_Tool_1
             foreach (DirectoryInfo dir in temp.EnumerateDirectories())
                 DeleteCompletely(dir.FullName);
             temp.Delete();
+        }
+        private static void ActualUnzip(string path,string exitpath)
+        {
+            ZipFile.ExtractToDirectory(path, exitpath);
+            string tempPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\WRdata-master";
+            ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRdata.zip"), tempPath);
+            ZipFile.ExtractToDirectory(Path.Combine(tempPath, "WRstraatnamen.zip"), tempPath);
         }
 
     }

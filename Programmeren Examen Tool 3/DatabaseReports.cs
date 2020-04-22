@@ -1,27 +1,42 @@
-﻿using Programmeren_Examen_Tool_1;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Linq;
+using System.Text;
+using Programmeren_Examen_Tool_1;
 
 namespace Programmeren_Examen_Tool_3
 {
-    class ReportWriter
+    class DatabaseReports
     {
-        public ReportWriter(string path)
+        private string ReportsPath;
+        public iDataFetcher Fetch { get; set; }
+        public DatabaseReports(iDataFetcher fetcher,string reportsPath)
         {
-            ReportsPath = path;
+            Fetch = fetcher;
+            ReportsPath = reportsPath;
         }
-        public string ReportsPath { get; set; }
-        public void StraatReport(Straat straat)
+        public void StraatReport(int straatId)
         {
+            Straat straat = Fetch.ReturnStraatVoorId(straatId);
+
             Console.WriteLine($"StraatReport van {straat.ToString()}");
             straat.ShowStraat();
             Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------------------------\n\n");
         }
-        public void StraatIdsReport(List<int> straatIds,string gemeenteNaam)
+        public void StraatReport(string gemeentenaam, string straatNaam)
         {
+            Straat straat = Fetch.ReturnStraatVoorNaam(gemeentenaam,straatNaam);
+
+            Console.WriteLine($"StraatReport van {straat.ToString()}");
+            straat.ShowStraat();
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------------------------\n\n");
+        }
+
+        public void StraatIdsReport(string gemeenteNaam)
+        {
+            List<int> straatIds = Fetch.ReturnStraatIdsVoorGemeenteNaam(gemeenteNaam);
+
             string exitPath = Path.Combine(ReportsPath, $"StraatIDs in {gemeenteNaam}.txt");
             if (File.Exists(exitPath))
                 File.Delete(exitPath);
@@ -34,10 +49,12 @@ namespace Programmeren_Examen_Tool_3
                     writer.WriteLine($"        -   {straatId}");
                 }
             }
-            Console.WriteLine($"StraatnaamReport weggeschreven in {exitPath}");
+            Console.WriteLine($"StraatnaamReport weggeschreven in {exitPath}\n\n");
         }
-        public void StraatNamenReport(List<string> straten,string gemeente)
+        public void StraatNamenReport(string gemeente)
         {
+            List<string> straten = Fetch.StraatNamenVoorGemeenteNaam(gemeente);
+
             string exitPath = Path.Combine(ReportsPath, $"Straatnamen in {gemeente}.txt");
             if (File.Exists(exitPath))
                 File.Delete(exitPath);
@@ -50,7 +67,7 @@ namespace Programmeren_Examen_Tool_3
                     writer.WriteLine($"        -   {straatNaam}");
                 }
             }
-            Console.WriteLine($"StraatnaamReport weggeschreven in {exitPath}");
+            Console.WriteLine($"StraatnaamReport weggeschreven in {exitPath}\n\n");
         }
 
         private void CheckAndDeleteFile(string path)
@@ -60,9 +77,11 @@ namespace Programmeren_Examen_Tool_3
                 File.Delete(path);
             }
         }
-        public void ProvincieRapport(Provincie prov)
+        public void ProvincieRapport(string provincieNaam)
         {
-            string path = Path.Combine(ReportsPath,$"Provincie rapport {prov.Naam}.txt");
+            Provincie prov = Fetch.ReturnProvincieCompleteVoorNaam(provincieNaam);
+
+            string path = Path.Combine(ReportsPath, $"Provincie rapport {prov.Naam}.txt");
             CheckAndDeleteFile(path);
             using (StreamWriter writer = File.CreateText(path))
             {
@@ -71,21 +90,25 @@ namespace Programmeren_Examen_Tool_3
                 {
                     writer.WriteLine($"{gem.Naam}: {gem.Straten.Count}");
                     gem.Straten = gem.Straten.OrderBy(s => s.Lengte).ToList();
-                    foreach(Straat straat in gem.Straten)
+                    foreach (Straat straat in gem.Straten)
                     {
                         writer.WriteLine($"     ■   {straat.Naam}, {straat.Lengte}");
                     }
                 }
             }
+            Console.WriteLine($"PrivincieReport weggeschreven in {path}\n\n");
         }
-        public void AangrenzendeStratenReport(List<Straat> straten,Straat origineleStraat)
+        public void AangrenzendeStratenReport(int straatId)
         {
+            List<Straat> straten = Fetch.ReturnStratenAangrenzendAanId(straatId);
+            Straat origineleStraat = Fetch.ReturnStraatVoorId(straatId);
+
             string exitPath = Path.Combine(ReportsPath, $"Aangrenzende straten van {origineleStraat.Naam}, {origineleStraat.Gemeente.Naam}.txt");
             CheckAndDeleteFile(exitPath);
             using (StreamWriter writer = File.CreateText(exitPath))
             {
                 writer.WriteLine($"Aantal aangrenzende straten: {straten.Count} \n");
-                foreach(Straat str in straten)
+                foreach (Straat str in straten)
                 {
                     List<Segment> segmenten = str.Graaf.GetSegmenten();
                     writer.WriteLine($"{str.StraatID}, {str.Naam}, {str.Gemeente.Naam}, {str.Gemeente.Provincie.Naam}");
@@ -98,7 +121,7 @@ namespace Programmeren_Examen_Tool_3
                         foreach (Segment seg in pair.Value)
                         {
                             writer.WriteLine($"     [segment:{seg.SegmentID},begin:{seg.BeginKnoop.KnoopID},eind:{seg.EindKnoop.KnoopID}]");
-                                foreach(Punt punt in seg.Vertices)
+                            foreach (Punt punt in seg.Vertices)
                             {
                                 writer.WriteLine($"             ({punt.X};{punt.Y})");
                             }
@@ -107,7 +130,7 @@ namespace Programmeren_Examen_Tool_3
                     }
                 }
             }
-            Console.WriteLine($"Aangrenzende straten Report weggeschreven in {exitPath}");
+            Console.WriteLine($"Aangrenzende straten Report weggeschreven in {exitPath}\n\n");
         }
     }
 }

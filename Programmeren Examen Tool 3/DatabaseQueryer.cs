@@ -8,7 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Programmeren_Examen_Tool_3
 {
-    class DatabaseQueryer
+    class DatabaseQueryer : iDataFetcher
     {
         private string _connectionString = @"Data Source=DESKTOP-VCI7746\SQLEXPRESS;Initial Catalog=Prog3Examen;Integrated Security=True";
         private SqlConnection getConnection()
