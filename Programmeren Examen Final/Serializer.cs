@@ -26,6 +26,7 @@ namespace Programmeren_Examen_Tool_1
             Stream stream = new FileStream(exitPath, FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, Belg);
             stream.Close();
+            Console.WriteLine($"Serialisation finished and placed at : {exitPath}");
         }
     }
 }

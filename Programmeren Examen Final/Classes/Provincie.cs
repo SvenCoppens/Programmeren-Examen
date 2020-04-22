@@ -39,5 +39,9 @@ namespace Programmeren_Examen_Tool_1
         {
             return HashCode.Combine(Gemeenten, Naam, Id);
         }
+        public override string ToString()
+        {
+            return Naam;
+        }
     }
 }

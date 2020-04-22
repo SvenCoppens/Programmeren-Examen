@@ -30,7 +30,7 @@ namespace Programmeren_Examen_Tool_2
         }
         public void FillDataBaseWithProvincie(Provincie prov)
         {
-            //if(!CheckProvincie(prov))   //dit verwijderen na vullen i guess?
+            if(!CheckProvincie(prov))   //controle op dubbele entries
                 AddProvincie(prov);
             foreach (Gemeente gem in prov.Gemeenten)
             {
@@ -39,14 +39,35 @@ namespace Programmeren_Examen_Tool_2
         }
         public void FillDatabaseWithGemeente(Gemeente gem)
         {
-            //if (!CheckGemeente(gem)) //dit verwijderen na vullen i guess?
+            if (!CheckGemeente(gem)) //controle op dubbele entries
                 AddGemeentePlusLink(gem);
             foreach (Straat str in gem.Straten)
             {
-                //if(!CheckStraat(str))//dit verwijderen na vullen i guess?
+                if(!CheckStraat(str))   //controle op dubbele entries
                     AddStraatPlusLink(str);
 
                 AddSegmenten(str);
+            }
+        }
+        public void AddSegmenten(Straat str)
+        {
+            List<Segment> segmenten = str.GetSegmenten();
+
+            for (int i = 0; i < segmenten.Count; i++)
+            {
+                //segmenten kunnen tot meerdere straten behoren, dus perfect mogenlijk dat dit segment al in de databank is toegevoegd door een andere straat
+                if (CheckSegment(segmenten[i]))
+                {
+                    //hier moet ik enkel de koppeling tussen het segment en de straat aanmaken
+                    if (!CheckSegmentLink(segmenten[i], str.StraatID))      //controle op dubbele entries
+                        LinkSegment(segmenten[i],str.StraatID);
+                }
+                //als het Segment zich nog niet in de databank bevindt.
+                else
+                {
+                    //hier moet ik het segment EN de koppeling aanmaken.
+                    AddSegmentWithLink(segmenten[i],str.StraatID);
+                }
             }
         }
         public void AddProvincie(Provincie prov)
@@ -191,39 +212,6 @@ namespace Programmeren_Examen_Tool_2
                 }
             }
         }
-        public void AddSegmenten(Straat str)
-        {
-            #region SegmentCollectie
-            List<Segment> segmenten = new List<Segment>();
-            //unieke segmenten ophalen zodat we niet met dubbele entries belanden.
-            foreach(KeyValuePair<Knoop,List<Segment>> collectie in str.Graaf.Map)
-            {
-                foreach(Segment seg in collectie.Value)
-                {
-                    if (!segmenten.Contains(seg))
-                    {
-                        segmenten.Add(seg);
-                    }
-                }
-            }
-            #endregion
-            for (int i = 0; i < segmenten.Count; i++)
-            {
-                //segmenten kunnen tot meerdere straten behoren, dus perfect mogenlijk dat dit segment al in de databank is toegevoegd door een andere straat
-                if (CheckSegment(segmenten[i]))
-                {
-                    //hier moet ik enkel de koppeling tussen het segment en de straat aanmaken
-                    //if (!CheckSegmentLink(segmenten[i], str.StraatID))//dit verwijderen na vullen i guess?
-                        LinkSegment(segmenten[i],str.StraatID);
-                }
-                //als het Segment zich nog niet in de databank bevindt.
-                else
-                {
-                    //hier moet ik het segment EN de koppeling aanmaken.
-                    AddSegmentWithLink(segmenten[i],str.StraatID);
-                }
-            }
-        }
         public void AddSegmentWithLink(Segment seg,int straatId)
         {
             //controleren of de knoop zich al in de databank bevindt(perfect mogenlijk dat 1 van de 2 er zich al in bevindt maar de andere niet, dus moet met 2 iffen werken)
@@ -239,8 +227,8 @@ namespace Programmeren_Examen_Tool_2
 
             //het effectieve toevoegen van het Segment in de Databank, Inclusief punten om zo het aantal connecties te minimaliseren. De voorkeur gelegd op dubbele code over een unieke connectie voor elk individueel punt.
             SqlConnection connection = getConnection();
-            string queryPunt = "INSERT INTO dbo.punt (X,Y) output INSERTED.ID VALUES(@X, @Y)";
             string querySegment = "INSERT INTO dbo.Segment VALUES(@SegmentId,@BeginKnoopId,@EindKnoopId)";
+            string queryPunt = "INSERT INTO dbo.punt (X,Y) output INSERTED.ID VALUES(@X, @Y)";
             string queryVertices = "INSERT INTO dbo.vertices VALUES(@SegmentId,@PuntId)";
             string queryStraatLink = "INSERT INTO dbo.straatSegmenten VALUES(@StraatId,@SegmentId)";
 
@@ -272,6 +260,7 @@ namespace Programmeren_Examen_Tool_2
                 straatCommand.Parameters.Add(new SqlParameter("@SegmentId", SqlDbType.Int));
                 straatCommand.Parameters["@SegmentId"].Value = seg.SegmentID;
                 straatCommand.Parameters["@StraatId"].Value = straatId;
+
                 // segment toevoegen -> punt toevoegen -> vertices vaststellen, zo hoef ik maar 1 loop te doen.
                 connection.Open();
                 SqlTransaction transaction = connection.BeginTransaction();
@@ -283,10 +272,10 @@ namespace Programmeren_Examen_Tool_2
                 {
                     segmentCommand.ExecuteNonQuery();
 
-                    foreach(Punt punt in seg.Vertices)
+                    for(int i=1;i<seg.Vertices.Count-2;i++)
                     {
-                        puntCommand.Parameters["@X"].Value = punt.X;
-                        puntCommand.Parameters["@Y"].Value = punt.Y;
+                        puntCommand.Parameters["@X"].Value = seg.Vertices[i].X;
+                        puntCommand.Parameters["@Y"].Value = seg.Vertices[i].Y;
                         int puntId = ((int)puntCommand.ExecuteScalar());
 
                         verticesCommand.Parameters["@PuntId"].Value = puntId;
@@ -348,6 +337,8 @@ namespace Programmeren_Examen_Tool_2
                 }
             }
         }
+
+        #region Check Methods
         public bool CheckSegment(Segment seg)
         {
             SqlConnection connection = getConnection();
@@ -568,6 +559,7 @@ namespace Programmeren_Examen_Tool_2
                 }
             }
         }
+        #endregion
 
     }
 }

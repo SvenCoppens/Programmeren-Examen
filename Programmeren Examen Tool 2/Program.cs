@@ -9,23 +9,24 @@ namespace Programmeren_Examen_Tool_2
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            Serialization_extraction SE = new Serialization_extraction();
-            Belgie belg = SE.Serialize();
+            string binPath = @"D:\Programmeren Data en Bestanden\Wegen Examen\WRdata\Belgie.bin";
+            SerializationExtraction SE = new SerializationExtraction();
+            Belgie belg = SE.Unserialize(binPath);
             Console.WriteLine("Hello World!2");
             DataProcessing dP = new DataProcessing(belg);
             //dP.CompletelyFillDataBase();
-            
             //dP.FillDataBaseWithProvincie(belg.Provincies[0]);
             //dP.FillDataBaseWithProvincie(belg.Provincies[1]);
             //dP.FillDataBaseWithProvincie(belg.Provincies[2]);
             //dP.FillDataBaseWithProvincie(belg.Provincies[3]);
-            //dP.FillDataBaseWithProvincie(belg.Provincies[4]);
+            dP.FillDataBaseWithProvincie(belg.Provincies[4]);
+        }
 
             //Console.WriteLine("testen");
             //Belgie belg = TestData();
             ////Knoop knoop1 = new Knoop(30, new Punt(2.45, 3.45));
             ////dp.FillDataBase();
-        }
+        //}
 
         static Belgie TestData()
         {

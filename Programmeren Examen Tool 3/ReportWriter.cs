@@ -14,7 +14,46 @@ namespace Programmeren_Examen_Tool_3
             ReportsPath = path;
         }
         public string ReportsPath { get; set; }
-        public void CheckAndDeleteFile(string path)
+        public void StraatReport(Straat straat)
+        {
+            Console.WriteLine($"StraatReport van {straat.ToString()}");
+            straat.ShowStraat();
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------------------------\n\n");
+        }
+        public void StraatIdsReport(List<int> straatIds,string gemeenteNaam)
+        {
+            string exitPath = Path.Combine(ReportsPath, $"StraatIDs in {gemeenteNaam}.txt");
+            if (File.Exists(exitPath))
+                File.Delete(exitPath);
+            using (StreamWriter writer = File.CreateText(exitPath))
+            {
+                writer.WriteLine($"Lijst van straatIDs in de gemeente van: {gemeenteNaam}");
+                writer.WriteLine($"Totaal aantal van {straatIds.Count}");
+                foreach (int straatId in straatIds)
+                {
+                    writer.WriteLine($"        -   {straatId}");
+                }
+            }
+            Console.WriteLine($"StraatnaamReport weggeschreven in {exitPath}");
+        }
+        public void StraatNamenReport(List<string> straten,string gemeente)
+        {
+            string exitPath = Path.Combine(ReportsPath, $"Straatnamen in {gemeente}.txt");
+            if (File.Exists(exitPath))
+                File.Delete(exitPath);
+            using (StreamWriter writer = File.CreateText(exitPath))
+            {
+                writer.WriteLine($"Lijst van straatnamen in de gemeente van: {gemeente}");
+                writer.WriteLine($"Totaal aantal van {straten.Count}");
+                foreach (string straatNaam in straten)
+                {
+                    writer.WriteLine($"        -   {straatNaam}");
+                }
+            }
+            Console.WriteLine($"StraatnaamReport weggeschreven in {exitPath}");
+        }
+
+        private void CheckAndDeleteFile(string path)
         {
             if (File.Exists(path))
             {
@@ -41,11 +80,11 @@ namespace Programmeren_Examen_Tool_3
         }
         public void AangrenzendeStratenReport(List<Straat> straten,Straat origineleStraat)
         {
-            string path = Path.Combine(ReportsPath, $"Aangrenzende straten van {origineleStraat.Naam}, {origineleStraat.Gemeente.Naam}.txt");
-            CheckAndDeleteFile(path);
-            using (StreamWriter writer = File.CreateText(path))
+            string exitPath = Path.Combine(ReportsPath, $"Aangrenzende straten van {origineleStraat.Naam}, {origineleStraat.Gemeente.Naam}.txt");
+            CheckAndDeleteFile(exitPath);
+            using (StreamWriter writer = File.CreateText(exitPath))
             {
-                writer.WriteLine($"Aantal aangrenzende straten: {straten.Count}");
+                writer.WriteLine($"Aantal aangrenzende straten: {straten.Count} \n");
                 foreach(Straat str in straten)
                 {
                     List<Segment> segmenten = str.Graaf.GetSegmenten();
@@ -66,8 +105,9 @@ namespace Programmeren_Examen_Tool_3
                         }
 
                     }
+                }
             }
-            }
+            Console.WriteLine($"Aangrenzende straten Report weggeschreven in {exitPath}");
         }
     }
 }
